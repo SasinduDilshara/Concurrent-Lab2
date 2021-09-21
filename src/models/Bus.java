@@ -11,7 +11,7 @@ public class Bus implements Runnable {
     public Semaphore bus;
     public Semaphore boarded;
     public final String departMessage = "Departed";
-    public final int MAXIMUM_RIDERS = 2;
+    public final int MAXIMUM_RIDERS = 20;
     private int numberOfSelectedRiders = 0;
     private BusHalt busHalt;
 
@@ -76,9 +76,10 @@ public class Bus implements Runnable {
 
     @Override
     public void run() {
-//        while (true) {
-            System.out.println("Bus executed \n");
+        while (true) {
+//            System.out.println("Bus executed \n");
             try {
+                Thread.sleep(150);
                 mutex.acquire();
             } catch (InterruptedException e) {
                 System.out.println("Mutex in the " + this.toString() + "is got interrupted");
@@ -92,9 +93,10 @@ public class Bus implements Runnable {
                     System.out.println("Boarded in the " + this.toString() + "is got interrupted");
                 }
             }
-            numberOfSelectedRiders = Math.max(busHalt.getWaiting() - MAXIMUM_RIDERS, 0);
+//            numberOfSelectedRiders = Math.max(busHalt.getWaiting() - MAXIMUM_RIDERS, 0);
+            busHalt.setWaiting(Math.max(busHalt.getWaiting() - MAXIMUM_RIDERS, 0), true);
             mutex.release();
             depart();
-//        }
+        }
     }
 }
