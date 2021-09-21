@@ -75,7 +75,7 @@ public class Rider implements Runnable {
 //        while (true) {
 //            System.out.println("Rider executed \n");
             try {
-                Thread.sleep(100);
+//                Thread.sleep(100);
                 mutex.acquire();
             } catch (InterruptedException e) {
                 System.out.println("Mutex in the " + this.toString() + "is got interrupted");
