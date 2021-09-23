@@ -8,8 +8,8 @@ import java.util.List;
 import java.util.concurrent.Semaphore;
 
 public class Main {
-    private static Integer MAX_PASSENGER = 13;
-    private static Integer MAX_BUSES = 2;
+    public static Integer MAX_PASSENGER = 100;
+    public static Integer MAX_BUSES = 10;
 
     public static void main(String[] args) throws InterruptedException {
         BusHalt bushalt = BusHalt.createBusHalt();
@@ -22,9 +22,9 @@ public class Main {
         List<Thread> buses = new ArrayList<>();
 
         Runnable busHaltSimulation = () -> {
-            for (int i = 0; i < MAX_PASSENGER; i++ ){
+            for (int i = 0; i < MAX_PASSENGER; i++) {
                 try {
-                    Thread.sleep( 100 );
+                    Thread.sleep( 1000 );
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
@@ -46,7 +46,7 @@ public class Main {
         Runnable busScheduleSimulation = () -> {
             for (int i = 0; i < MAX_BUSES; i++) {
                 try {
-                    Thread.sleep( 1000 );
+                    Thread.sleep( 5000 );
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
