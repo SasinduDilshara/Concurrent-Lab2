@@ -11,7 +11,7 @@ public class Bus implements Runnable {
     public Semaphore bus;
     public Semaphore boarded;
     public final String departMessage = "Departed";
-    public final int MAXIMUM_RIDERS = 5;
+    public final int MAXIMUM_RIDERS = 15;
     private int numberOfSelectedRiders = 0;
     private BusHalt busHalt;
 
@@ -76,24 +76,27 @@ public class Bus implements Runnable {
 
     @Override
     public void run() {
-        try {
-            mutex.acquire();
-        } catch (InterruptedException e) {
-            System.out.println("Mutex in the " + this.toString() + "is got interrupted");
-        }
-        numberOfSelectedRiders = Math.min(busHalt.getWaiting(), MAXIMUM_RIDERS);
-        for (int i = 0; i < numberOfSelectedRiders; i++) {
-            bus.release();
+//        while (true) {
+//            System.out.println("Bus executed \n");
             try {
-                boarded.acquire();
+//                Thread.sleep(150);
+                mutex.acquire();
             } catch (InterruptedException e) {
-                System.out.println("Boarded in the " + this.toString() + "is got interrupted");
+                System.out.println("Mutex in the " + this.toString() + "is got interrupted");
             }
-        }
-        busHalt.setWaiting(Math.max((busHalt.getWaiting() - MAXIMUM_RIDERS), 0));
-        mutex.release();
-        System.out.println("Bus executed \n");
-        depart();
-
+            numberOfSelectedRiders = Math.min(busHalt.getWaiting(), MAXIMUM_RIDERS);
+            for (int i = 0; i < numberOfSelectedRiders; i++) {
+                bus.release();
+                try {
+                    boarded.acquire();
+                } catch (InterruptedException e) {
+                    System.out.println("Boarded in the " + this.toString() + "is got interrupted");
+                }
+            }
+//            numberOfSelectedRiders = Math.max(busHalt.getWaiting() - MAXIMUM_RIDERS, 0);
+            busHalt.setWaiting(Math.max(busHalt.getWaiting() - MAXIMUM_RIDERS, 0), true);
+            mutex.release();
+            depart();
+//        }
     }
 }
