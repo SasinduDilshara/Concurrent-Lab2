@@ -20,10 +20,10 @@ public class BusHalt {
     }
 
     public void increaseWaitingCount() {
-        setWaiting(waiting++);
+        setWaiting(++waiting);
     }
 
     public void decreaseWaitingCount() {
-        setWaiting(waiting--);
+        setWaiting(--waiting);
     }
 }
