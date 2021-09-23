@@ -9,7 +9,6 @@ public class Bus implements Runnable {
     public Semaphore bus;
     public Semaphore boarded;
     public final String departMessage = "Departed";
-    public final int MAXIMUM_RIDERS = 2;
     private int numberOfSelectedRiders = 0;
     private BusHalt busHalt;
     public int maxRiders;
@@ -20,7 +19,6 @@ public class Bus implements Runnable {
         this.bus = bus;
         this.boarded = boarded;
         this.busHalt = busHalt;
-        this.maxRiders = MAXIMUM_RIDERS;
     }
 
     public Bus(String id, Semaphore mutex, Semaphore bus, Semaphore boarded, BusHalt busHalt, int maxRiders) {
@@ -38,6 +36,15 @@ public class Bus implements Runnable {
         this.bus = bus;
         this.boarded = boarded;
         this.busHalt = busHalt;
+    }
+
+    public Bus(Semaphore mutex, Semaphore bus, Semaphore boarded, BusHalt busHalt, int maxRiders) {
+        this.id = UUID.randomUUID().toString();
+        this.mutex = mutex;
+        this.bus = bus;
+        this.boarded = boarded;
+        this.busHalt = busHalt;
+        this.maxRiders = maxRiders;
     }
 
     @Override

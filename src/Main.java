@@ -1,22 +1,42 @@
 import helper.ExponentialDistribution;
+
 import models.Bus;
 import models.BusHalt;
 import models.Rider;
-
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.Semaphore;
 
 public class Main {
-    private static Integer MAX_PASSENGER = 13;
+    public static String END_MESSAGE = "This is the end of the Simulation";
+
+    private static Integer MAX_PASSENGER = 130;
     private static Integer MAX_BUSES = 10;
-    private static Double busMean = 20 * 60 * 1000 * 0.001;
-    private static Double riderMean = 30 * 1000 * 0.001;
+
+    private static Double busMean = 20 * 60 * 1000 * 1.0 * 0.001;
+    private static Double riderMean = 30 * 1000 * 1.0 * 0.001;
+
+    private static Integer maxPassengers = 2;
+
+    private static Integer busCount = 0;
+    private static Integer riderCount = 0;
 
     public static void main(String[] args) throws InterruptedException {
-        BusHalt bushalt = BusHalt.createBusHalt();
 
+        try {
+            maxPassengers = Integer.valueOf(args[0]);
+            MAX_PASSENGER = Integer.valueOf(args[1]);
+            MAX_BUSES = Integer.valueOf(args[2]);
+        } catch (Exception ex) {
+            System.out.println(
+                "Maximum Passengers count per bus - " + maxPassengers + "\n" +
+                "Passengers count - " + MAX_PASSENGER + "\n" +
+                "Bus count - " + MAX_BUSES
+            );
+        }
+
+        BusHalt bushalt = BusHalt.createBusHalt();
         Semaphore mutex = new Semaphore(1);
         Semaphore bus = new Semaphore(0);
         Semaphore boarded = new Semaphore(0);
@@ -38,7 +58,6 @@ public class Main {
                 Thread riderThread = new Thread(new Rider(mutex, bus, boarded, bushalt));
                 riderThread.start();
                 riders.add(riderThread);
-                System.out.println(bushalt.getWaiting());
             }
 
             for (int i=0; i < riders.size(); i++) {
@@ -47,6 +66,7 @@ public class Main {
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
+                riderCount = riderCount + 1;
             }
         };
 
@@ -57,7 +77,7 @@ public class Main {
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
-                Thread busThread = new Thread(new Bus(mutex, bus, boarded, bushalt));
+                Thread busThread = new Thread(new Bus(mutex, bus, boarded, bushalt, maxPassengers));
                 busThread.start();
                 buses.add(busThread);
             }
@@ -68,6 +88,7 @@ public class Main {
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
+                busCount = busCount + 1;
             }
         };
 
@@ -75,11 +96,16 @@ public class Main {
         Thread busScheduleSimulationThread = new Thread(busScheduleSimulation);
 
         busHaltSimulationThread.start();
+        Thread.sleep(100);
         busScheduleSimulationThread.start();
+
+        while ((busCount < MAX_BUSES) && (riderCount < MAX_PASSENGER)) {
+            Thread.sleep(10);
+        }
+
+        System.out.println("\n" + END_MESSAGE);
 
         busHaltSimulationThread.join();
         busScheduleSimulationThread.join();
-
-        System.out.println("\nEnd of the Simulation");
     }
 }
