@@ -11,13 +11,13 @@ import java.util.concurrent.Semaphore;
 public class Main {
     public static String END_MESSAGE = "This is the end of the Simulation";
 
-    private static Integer MAX_PASSENGER = 130;
-    private static Integer MAX_BUSES = 10;
+    private static Integer MAX_PASSENGER = 190;
+    private static Integer MAX_BUSES = 20;
 
-    private static Double busMean = 20 * 60 * 1000 * 1.0 * 0.001;
-    private static Double riderMean = 30 * 1000 * 1.0 * 0.001;
+    private static Double busMean = 20 * 60 * 1000 * 1.0;
+    private static Double riderMean = 30 * 1000 * 1.0;
 
-    private static Integer maxPassengers = 2;
+    private static Integer maxPassengers = 9;
 
     private static Integer busCount = 0;
     private static Integer riderCount = 0;
@@ -49,7 +49,7 @@ public class Main {
         ExponentialDistribution riderExponentialDistribution = new ExponentialDistribution(riderMean, MAX_PASSENGER);
 
         Runnable busHaltSimulation = () -> {
-            for (int i = 0; i < MAX_PASSENGER; i++ ){
+            for (int i = 0; i < MAX_PASSENGER; i++ ) {
                 try {
                     Thread.sleep((long)(Math.abs(riderExponentialDistribution.getNext())));
                 } catch (InterruptedException e) {
