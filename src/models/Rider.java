@@ -72,10 +72,7 @@ public class Rider implements Runnable {
 
     @Override
     public void run() {
-//        while (true) {
-//            System.out.println("Rider executed \n");
             try {
-//                Thread.sleep(100);
                 mutex.acquire();
             } catch (InterruptedException e) {
                 System.out.println("Mutex in the " + this.toString() + "is got interrupted");
@@ -90,6 +87,5 @@ public class Rider implements Runnable {
             }
             board();
             boarded.release();
-//        }
     }
 }

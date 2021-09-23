@@ -1,3 +1,4 @@
+import helper.ExponentialDistribution;
 import models.Bus;
 import models.BusHalt;
 import models.Rider;
@@ -5,12 +6,13 @@ import models.Rider;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
 import java.util.concurrent.Semaphore;
 
 public class Main {
     private static Integer MAX_PASSENGER = 13;
     private static Integer MAX_BUSES = 10;
+    private static Double busMean = 20 * 60 * 1000 * 0.001;
+    private static Double riderMean = 30 * 1000 * 0.001;
 
     public static void main(String[] args) throws InterruptedException {
         BusHalt bushalt = BusHalt.createBusHalt();
@@ -22,12 +24,14 @@ public class Main {
         List<Thread> riders = new ArrayList<>();
         List<Thread> buses = new ArrayList<>();
         Boolean isFinished = false;
-        Random rand = new Random();
+
+        ExponentialDistribution busExponentialDistribution = new ExponentialDistribution(busMean, MAX_BUSES);
+        ExponentialDistribution riderExponentialDistribution = new ExponentialDistribution(riderMean, MAX_PASSENGER);
 
         Runnable busHaltSimulation = () -> {
             for (int i = 0; i < MAX_PASSENGER; i++ ){
                 try {
-                    Thread.sleep( Math.abs(rand.nextInt()) % 10);
+                    Thread.sleep((long)(Math.abs(riderExponentialDistribution.getNext())));
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
@@ -49,7 +53,7 @@ public class Main {
         Runnable busScheduleSimulation = () -> {
             for (int i = 0; i < MAX_BUSES; i++) {
                 try {
-                    Thread.sleep( Math.abs(rand.nextInt()) % 100);
+                    Thread.sleep((long)(Math.abs(busExponentialDistribution.getNext())));
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
@@ -72,14 +76,6 @@ public class Main {
 
         busHaltSimulationThread.start();
         busScheduleSimulationThread.start();
-
-//        for (int i=0; i < buses.size(); i++) {
-//            buses.get(i).join();
-//        }
-//
-//        for (int i=0; i < riders.size(); i++) {
-//            riders.get(i).join();
-//        }
 
         busHaltSimulationThread.join();
         busScheduleSimulationThread.join();

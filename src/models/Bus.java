@@ -1,7 +1,5 @@
 package models;
 
-import com.sun.tools.javac.Main;
-
 import java.util.UUID;
 import java.util.concurrent.Semaphore;
 
@@ -11,9 +9,10 @@ public class Bus implements Runnable {
     public Semaphore bus;
     public Semaphore boarded;
     public final String departMessage = "Departed";
-    public final int MAXIMUM_RIDERS = 15;
+    public final int MAXIMUM_RIDERS = 2;
     private int numberOfSelectedRiders = 0;
     private BusHalt busHalt;
+    public int maxRiders;
 
     public Bus(String id, Semaphore mutex, Semaphore bus, Semaphore boarded, BusHalt busHalt) {
         this.id = id;
@@ -21,6 +20,16 @@ public class Bus implements Runnable {
         this.bus = bus;
         this.boarded = boarded;
         this.busHalt = busHalt;
+        this.maxRiders = MAXIMUM_RIDERS;
+    }
+
+    public Bus(String id, Semaphore mutex, Semaphore bus, Semaphore boarded, BusHalt busHalt, int maxRiders) {
+        this.id = id;
+        this.mutex = mutex;
+        this.bus = bus;
+        this.boarded = boarded;
+        this.busHalt = busHalt;
+        this.maxRiders = maxRiders;
     }
 
     public Bus(Semaphore mutex, Semaphore bus, Semaphore boarded, BusHalt busHalt) {
@@ -76,15 +85,12 @@ public class Bus implements Runnable {
 
     @Override
     public void run() {
-//        while (true) {
-//            System.out.println("Bus executed \n");
             try {
-//                Thread.sleep(150);
                 mutex.acquire();
             } catch (InterruptedException e) {
                 System.out.println("Mutex in the " + this.toString() + "is got interrupted");
             }
-            numberOfSelectedRiders = Math.min(busHalt.getWaiting(), MAXIMUM_RIDERS);
+            numberOfSelectedRiders = Math.min(busHalt.getWaiting(), this.maxRiders);
             for (int i = 0; i < numberOfSelectedRiders; i++) {
                 bus.release();
                 try {
@@ -93,10 +99,8 @@ public class Bus implements Runnable {
                     System.out.println("Boarded in the " + this.toString() + "is got interrupted");
                 }
             }
-//            numberOfSelectedRiders = Math.max(busHalt.getWaiting() - MAXIMUM_RIDERS, 0);
-            busHalt.setWaiting(Math.max(busHalt.getWaiting() - MAXIMUM_RIDERS, 0), true);
+            busHalt.setWaiting(Math.max(busHalt.getWaiting() - this.maxRiders, 0), true);
             mutex.release();
             depart();
-//        }
     }
 }
