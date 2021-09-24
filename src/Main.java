@@ -9,8 +9,8 @@ import java.util.Random;
 import java.util.concurrent.Semaphore;
 
 public class Main {
-    private static Integer MAX_PASSENGER = 13;
-    private static Integer MAX_BUSES = 10;
+    private static Integer MAX_PASSENGER = 200;
+    private static Integer MAX_BUSES = 50;
 
     public static void main(String[] args) throws InterruptedException {
         BusHalt bushalt = BusHalt.createBusHalt();
@@ -21,20 +21,18 @@ public class Main {
 
         List<Thread> riders = new ArrayList<>();
         List<Thread> buses = new ArrayList<>();
-        Boolean isFinished = false;
         Random rand = new Random();
 
         Runnable busHaltSimulation = () -> {
             for (int i = 0; i < MAX_PASSENGER; i++ ){
                 try {
-                    Thread.sleep( Math.abs(rand.nextInt()) % 10);
+                    Thread.sleep( Math.abs(rand.nextInt() * 1000) % 1000);
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
                 Thread riderThread = new Thread(new Rider(mutex, bus, boarded, bushalt));
                 riderThread.start();
                 riders.add(riderThread);
-                System.out.println(bushalt.getWaiting());
             }
 
             for (int i=0; i < riders.size(); i++) {
@@ -49,7 +47,7 @@ public class Main {
         Runnable busScheduleSimulation = () -> {
             for (int i = 0; i < MAX_BUSES; i++) {
                 try {
-                    Thread.sleep( Math.abs(rand.nextInt()) % 100);
+                    Thread.sleep( Math.abs(rand.nextInt() * 10000) % 10000);
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
@@ -72,14 +70,6 @@ public class Main {
 
         busHaltSimulationThread.start();
         busScheduleSimulationThread.start();
-
-//        for (int i=0; i < buses.size(); i++) {
-//            buses.get(i).join();
-//        }
-//
-//        for (int i=0; i < riders.size(); i++) {
-//            riders.get(i).join();
-//        }
 
         busHaltSimulationThread.join();
         busScheduleSimulationThread.join();

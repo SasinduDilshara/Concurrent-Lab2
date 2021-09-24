@@ -1,7 +1,7 @@
 package models;
 
 public class BusHalt {
-    public int waiting = 0;
+    private int waiting = 0;
     public static BusHalt busHalt = createBusHalt();
 
     public static BusHalt createBusHalt() {
@@ -15,23 +15,21 @@ public class BusHalt {
         return waiting;
     }
 
-    public void setWaiting(int waiting, boolean flag) {
-        this.waiting = waiting;
-        if (flag == true) {
-            show("Bus");
-        }
+    public void setWaiting(int new_waiting) {
+        this.waiting = new_waiting;
+        System.out.println("* Bus Arrived at the Halt " + Integer.toString(this.waiting - new_waiting));
     }
 
     public void increaseWaitingCount() {
-        setWaiting(++waiting, false);
+        this.waiting += 1;
         show("Rider");
     }
 
     public void decreaseWaitingCount() {
-        setWaiting(--waiting, false);
+        setWaiting(--waiting);
     }
 
     public void show(String type) {
-        System.out.println(type + " - Number of Riders:- " + this.getWaiting());
+        System.out.println("* Number of Riders at the Halt:- " + this.getWaiting() );
     }
 }
