@@ -14,6 +14,7 @@ public class Bus implements Runnable {
     public final int MAXIMUM_RIDERS = 15;
     private int numberOfSelectedRiders = 0;
     private BusHalt busHalt;
+    public int maxRiders;
 
     public Bus(String id, Semaphore mutex, Semaphore bus, Semaphore boarded, BusHalt busHalt) {
         this.id = id;
@@ -23,12 +24,30 @@ public class Bus implements Runnable {
         this.busHalt = busHalt;
     }
 
+    public Bus(String id, Semaphore mutex, Semaphore bus, Semaphore boarded, BusHalt busHalt, int maxRiders) {
+        this.id = id;
+        this.mutex = mutex;
+        this.bus = bus;
+        this.boarded = boarded;
+        this.busHalt = busHalt;
+        this.maxRiders = maxRiders;
+    }
+
     public Bus(Semaphore mutex, Semaphore bus, Semaphore boarded, BusHalt busHalt) {
         this.id = UUID.randomUUID().toString();
         this.mutex = mutex;
         this.bus = bus;
         this.boarded = boarded;
         this.busHalt = busHalt;
+    }
+
+    public Bus(Semaphore mutex, Semaphore bus, Semaphore boarded, BusHalt busHalt, int maxRiders) {
+        this.id = UUID.randomUUID().toString();
+        this.mutex = mutex;
+        this.bus = bus;
+        this.boarded = boarded;
+        this.busHalt = busHalt;
+        this.maxRiders = maxRiders;
     }
 
     @Override
@@ -76,22 +95,22 @@ public class Bus implements Runnable {
 
     @Override
     public void run() {
-        try {
-            mutex.acquire();
-        } catch (InterruptedException e) {
-            System.out.println("Mutex in the " + this.toString() + "is got interrupted");
-        }
-        numberOfSelectedRiders = Math.min(busHalt.getWaiting(), MAXIMUM_RIDERS);
-        for (int i = 0; i < numberOfSelectedRiders; i++) {
-            bus.release();
             try {
-                boarded.acquire();
+                mutex.acquire();
             } catch (InterruptedException e) {
-                System.out.println("Boarded in the " + this.toString() + "is got interrupted");
+                System.out.println("Mutex in the " + this.toString() + "is got interrupted");
             }
-        }
-        busHalt.setWaiting(Math.max(busHalt.getWaiting() - MAXIMUM_RIDERS, 0));
-        mutex.release();
-        depart();
+            numberOfSelectedRiders = Math.min(busHalt.getWaiting(), this.maxRiders);
+            for (int i = 0; i < numberOfSelectedRiders; i++) {
+                bus.release();
+                try {
+                    boarded.acquire();
+                } catch (InterruptedException e) {
+                    System.out.println("Boarded in the " + this.toString() + "is got interrupted");
+                }
+            }
+            busHalt.setWaiting(Math.max(busHalt.getWaiting() - this.maxRiders, 0), true);
+            mutex.release();
+            depart();
     }
 }
