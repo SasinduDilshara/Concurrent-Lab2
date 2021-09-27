@@ -4,23 +4,21 @@ import models.Bus;
 import models.BusHalt;
 import models.Rider;
 
-
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.Semaphore;
-import java.util.logging.ConsoleHandler;
 
 public class Main {
     public static String END_MESSAGE = "This is the end of the Simulation";
 
     private static Integer MAX_PASSENGER = 190;
-    private static Integer MAX_BUSES = 20;
+    private static Integer MAX_BUSES = 50;
 
-    private static Double busMean = 20 * 1000 * 60 * 1.0;
-    private static Double riderMean = 30 * 1000 * 1.0;
+    private static Double busMean = 20  * 60 * 1.0;
+    private static Double riderMean = 30 * 1.0;
 
-    private static Integer maxPassengers = 9;
+    private static Integer maxPassengers = 15;
 
     private static Integer busCount = 0;
     private static Integer riderCount = 0;
@@ -131,9 +129,9 @@ public class Main {
             Thread.sleep(10);
         }
 
-        System.out.println("\n" + END_MESSAGE);
-
         busHaltSimulationThread.join();
         busScheduleSimulationThread.join();
+
+        System.out.println("\n" + END_MESSAGE);
     }
 }

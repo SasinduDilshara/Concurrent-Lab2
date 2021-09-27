@@ -8,7 +8,7 @@ public class Bus implements Runnable {
     public Semaphore mutex;
     public Semaphore bus;
     public Semaphore boarded;
-    public final String departMessage = "Departed";
+    public final String departMessage = "Departed.";
     private int numberOfSelectedRiders = 0;
     private BusHalt busHalt;
     public int maxRiders;
@@ -86,8 +86,8 @@ public class Bus implements Runnable {
         this.boarded = boarded;
     }
 
-    public String depart() {
-        return this.toString() + " is " + departMessage;
+    public void depart() {
+         System.out.println("* Bus " + departMessage);
     }
 
     @Override
