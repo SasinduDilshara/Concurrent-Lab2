@@ -12,13 +12,13 @@ import java.util.concurrent.Semaphore;
 public class Main {
     public static String END_MESSAGE = "This is the end of the Simulation";
 
-    private static Integer MAX_PASSENGER = 190;
+    private static Integer MAX_PASSENGER = 1000;
     private static Integer MAX_BUSES = 50;
 
     private static Double busMean = 20  * 60 * 1.0;
     private static Double riderMean = 30 * 1.0;
 
-    private static Integer maxPassengers = 15;
+    private static Integer maxPassengers = 50;
 
     private static Integer busCount = 0;
     private static Integer riderCount = 0;
@@ -122,7 +122,7 @@ public class Main {
         Thread busScheduleSimulationThread = new Thread(busScheduleSimulation);
 
         busHaltSimulationThread.start();
-        Thread.sleep(100);
+        Thread.sleep(1000);
         busScheduleSimulationThread.start();
 
         while ((busCount < MAX_BUSES) && (riderCount < MAX_PASSENGER)) {
