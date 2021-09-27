@@ -1,7 +1,5 @@
 package models;
 
-import com.sun.tools.javac.Main;
-
 import java.util.UUID;
 import java.util.concurrent.Semaphore;
 
@@ -11,7 +9,6 @@ public class Bus implements Runnable {
     public Semaphore bus;
     public Semaphore boarded;
     public final String departMessage = "Departed";
-    public final int MAXIMUM_RIDERS = 15;
     private int numberOfSelectedRiders = 0;
     private BusHalt busHalt;
     public int maxRiders;
@@ -109,7 +106,7 @@ public class Bus implements Runnable {
                     System.out.println("Boarded in the " + this.toString() + "is got interrupted");
                 }
             }
-            busHalt.setWaiting(Math.max(busHalt.getWaiting() - this.maxRiders, 0), true);
+            busHalt.setWaiting(Math.max(busHalt.getWaiting() - this.maxRiders, 0));
             mutex.release();
             depart();
     }

@@ -15,9 +15,12 @@ public class BusHalt {
         return waiting;
     }
 
-    public void setWaiting(int new_waiting) {
-        this.waiting = new_waiting;
-        System.out.println("* Bus Arrived at the Halt " + Integer.toString(this.waiting - new_waiting));
+    public void setWaiting(int remaining) {
+        System.out.println("=============================================================================");
+        System.out.println("* Bus Arrived at the Halt.");
+        System.out.println("* Number of Riders went aboard : "+ Integer.toString(this.waiting - remaining));
+        System.out.println("* Number of Remaining riders : " + Integer.toString(remaining));
+        this.waiting = remaining;
     }
 
     public void increaseWaitingCount() {
@@ -30,6 +33,8 @@ public class BusHalt {
     }
 
     public void show(String type) {
-        System.out.println("* Number of Riders at the Halt:- " + this.getWaiting() );
+        System.out.println("=============================================================================");
+        System.out.println("* New Rider Arrived at the halt." );
+        System.out.println("* Number of Riders at the halt : " + + this.getWaiting());
     }
 }

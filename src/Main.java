@@ -15,8 +15,8 @@ public class Main {
     private static Integer MAX_PASSENGER = 190;
     private static Integer MAX_BUSES = 20;
 
-    private static Double busMean = 20 * 60 * 1000 * 1.0;
-    private static Double riderMean = 30 * 1000 * 1.0;
+    private static Double busMean = 20 * 60 * 1.0;
+    private static Double riderMean = 30 * 1.0;
 
     private static Integer maxPassengers = 9;
 

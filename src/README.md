@@ -20,3 +20,39 @@ Bus has a capacity of 50 passengers and inter arrival time between two bus are e
 
 Riders are arrived at the bus halt.
 
+### Psudo Code of the Algorithm
+
+#### Variables
+```markdown
+waiting = 0
+mutex = new Semaphore(1)
+bus = new Semaphore(0)
+boarded = new Semaphore(0)
+``` 
+
+#### Bus
+```markdown
+mutex.wait()
+n = min(waiting, 50)
+for i in range(n):
+    bus.signal()
+    boarded.wait()
+
+waiting = max(waiting-50, 0)
+mutex.signal()
+
+depart()
+```
+
+#### Rider
+
+```markdown
+mutex.wait()
+  waiting += 1
+mutex.signal()
+bus.wait()
+board()
+boarded.signal()
+```
+
+
