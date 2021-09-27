@@ -6,7 +6,7 @@ public class BusHalt {
 
     public static BusHalt createBusHalt() {
         if (busHalt == null) {
-            busHalt =  new BusHalt();
+            busHalt = new BusHalt();
         }
         return busHalt;
     }
@@ -18,8 +18,8 @@ public class BusHalt {
     public void setWaiting(int remaining) {
         System.out.println("=============================================================================");
         System.out.println("* Bus Arrived at the Halt.");
-        System.out.println("* Number of Riders went aboard : "+ Integer.toString(this.waiting - remaining));
-        System.out.println("* Number of Remaining riders : " + Integer.toString(remaining));
+        System.out.println("* Number of Riders went aboard : " + Integer.toString(this.waiting - remaining));
+        System.out.println("* Number of Remaining riders   : " + Integer.toString(remaining));
         this.waiting = remaining;
     }
 
@@ -34,7 +34,7 @@ public class BusHalt {
 
     public void show(String type) {
         System.out.println("=============================================================================");
-        System.out.println("* New Rider Arrived at the halt." );
-        System.out.println("* Number of Riders at the halt : " + + this.getWaiting());
+        System.out.println("* New Rider Arrived at the halt.");
+        System.out.println("* Number of Riders at the halt : " + +this.getWaiting());
     }
 }
