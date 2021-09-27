@@ -72,20 +72,20 @@ public class Rider implements Runnable {
 
     @Override
     public void run() {
-            try {
-                mutex.acquire();
-            } catch (InterruptedException e) {
-                System.out.println("Mutex in the " + this.toString() + "is got interrupted");
-            }
-            busHalt.increaseWaitingCount();
-            mutex.release();
+        try {
+            mutex.acquire();
+        } catch (InterruptedException e) {
+            System.out.println("Mutex in the " + this.toString() + "is got interrupted");
+        }
+        busHalt.increaseWaitingCount();
+        mutex.release();
 
-            try {
-                bus.acquire();
-            } catch (InterruptedException e) {
-                System.out.println("Bus in the " + this.toString() + "is got interrupted");
-            }
-            board();
-            boarded.release();
+        try {
+            bus.acquire();
+        } catch (InterruptedException e) {
+            System.out.println("Bus in the " + this.toString() + "is got interrupted");
+        }
+        board();
+        boarded.release();
     }
 }

@@ -106,7 +106,7 @@ public class Bus implements Runnable {
                     System.out.println("Boarded in the " + this.toString() + "is got interrupted");
                 }
             }
-            busHalt.setWaiting(Math.max(busHalt.getWaiting() - this.maxRiders, 0), true);
+            busHalt.setWaiting(Math.max(busHalt.getWaiting() - this.maxRiders, 0));
             mutex.release();
             depart();
     }

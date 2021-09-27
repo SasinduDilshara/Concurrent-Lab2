@@ -4,6 +4,7 @@ import models.Bus;
 import models.BusHalt;
 import models.Rider;
 
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.Semaphore;
@@ -14,7 +15,7 @@ public class Main {
     private static Integer MAX_PASSENGER = 190;
     private static Integer MAX_BUSES = 20;
 
-    private static Double busMean = 20 * 60 * 1000 * 1.0;
+    private static Double busMean = 20 * 1000 * 60 * 1.0;
     private static Double riderMean = 30 * 1000 * 1.0;
 
     private static Integer maxPassengers = 9;
@@ -43,7 +44,6 @@ public class Main {
 
         List<Thread> riders = new ArrayList<>();
         List<Thread> buses = new ArrayList<>();
-        Boolean isFinished = false;
 
         ExponentialDistribution busExponentialDistribution = new ExponentialDistribution(busMean, MAX_BUSES);
         ExponentialDistribution riderExponentialDistribution = new ExponentialDistribution(riderMean, MAX_PASSENGER);
