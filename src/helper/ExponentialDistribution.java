@@ -5,10 +5,10 @@ public class ExponentialDistribution {
     public double number;
     public int x;
 
-    public ExponentialDistribution(double mean, double number) {
+    public ExponentialDistribution(double mean, int number) {
         this.mean = mean;
         this.number = number;
-        this.x = -1;
+        this.x = number;
     }
 
     public double getMean() {
@@ -20,7 +20,7 @@ public class ExponentialDistribution {
     }
 
     public double getNext() {
-        this.x += 1;
+        this.x -= 1;
         return Math.log(1 - (((1 / this.number) * this.x)))/(1 / (-mean));
     }
 }
