@@ -22,9 +22,19 @@ Bus has a capacity of 50 passengers and inter arrival time between two bus are e
 
 Riders are arrived at the bus halt.
 
+## Solution Output Screen Shots
+
+![plot](images/1.png)
+![plot](images/2.png)
+![plot](images/3.png)
+![plot](images/4.png)
+![plot](images/5.png)
+![plot](images/6.png)
+
 ### Psudo Code of the Algorithm
 
 #### Variables
+
 ```markdown
 waiting = 0
 mutex = new Semaphore(1)
@@ -33,6 +43,7 @@ boarded = new Semaphore(0)
 ``` 
 
 #### Bus
+
 ```markdown
 mutex.wait()
 n = min(waiting, 50)
@@ -89,3 +100,4 @@ javac Main.java
 ```bash
 java Main
 ```
+
